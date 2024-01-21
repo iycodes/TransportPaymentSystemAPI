@@ -52,7 +52,7 @@ public class UserService {
     public static BufferedImage generateQRCodeImage(String userId) throws Exception {
         QRCodeWriter barcodeWriter = new QRCodeWriter();
         BitMatrix bitMatrix =
-                barcodeWriter.encode(userId, BarcodeFormat.QR_CODE, 200, 200);
+                barcodeWriter.encode(userId, BarcodeFormat.QR_CODE, 500, 500);
         return MatrixToImageWriter.toBufferedImage(bitMatrix);
     }
     public static BufferedImage getQRCode(String data, int width,
@@ -95,7 +95,7 @@ public class UserService {
                                       int height, boolean withViewBox) {
         try {
             SVGGraphics2D g2 = new SVGGraphics2D(width, height);
-            BufferedImage qrCodeImage = getQRCode(data);
+            BufferedImage qrCodeImage = getQRCode(data, 300, 300);
             g2.drawImage(qrCodeImage, 0,0, width, height, null);
 
             ViewBox viewBox = null;

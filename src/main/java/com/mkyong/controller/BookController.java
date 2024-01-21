@@ -1,4 +1,4 @@
-package com.mkyong.model.controller;
+package com.mkyong.controller;
 
 import com.mkyong.model.Book;
 import com.mkyong.service.BookService;
