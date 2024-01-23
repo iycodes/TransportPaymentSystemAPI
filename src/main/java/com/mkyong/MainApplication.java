@@ -24,22 +24,21 @@ import java.util.List;
 public class MainApplication {
 
     private static final Logger log = LoggerFactory.getLogger(MainApplication.class);
+    @Autowired
+    BookRepository bookRepository;
+    @Autowired
+    UserRepository userRepository;
 
     public static void main(String[] args) {
         SpringApplication.run(MainApplication.class, args);
     }
-
-    @Autowired
-    BookRepository bookRepository;
-
-    @Autowired
-    UserRepository userRepository;
     // Run this if app.db.init.enabled = true
 
     @Bean
     public HttpMessageConverter<BufferedImage> createImageHttpMessageConverter() {
         return new BufferedImageHttpMessageConverter();
     }
+
     @Bean
     @ConditionalOnProperty(prefix = "app", name = "db.init.enabled", havingValue = "true")
     public CommandLineRunner demoCommandLineRunner() {
@@ -67,9 +66,9 @@ public class MainApplication {
 
             );
             Userr userr1 = new Userr(
-                    "Iyanuoluwa", BigDecimal.valueOf(200000)
+                    "Iyanuoluwa", "iyanuoluwafanoro@gmail.com", "08142751683", "pyrex007"
             );
-            Userr userr2 = new Userr("Iyanu", BigDecimal.valueOf(99.9));
+            Userr userr2 = new Userr("Iyanu", "iyanufanoro@gmail.com", "08142751683", "pyrex007");
 
             bookRepository.saveAll(List.of(b1, b2, b3, b4));
             userRepository.saveAll(List.of(userr1, userr2));

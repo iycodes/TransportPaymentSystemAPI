@@ -17,7 +17,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
-public class    UserController {
+public class UserController {
     @Autowired
     private UserService userService;
 
@@ -34,7 +34,7 @@ public class    UserController {
     // create a user
     @ResponseStatus(HttpStatus.CREATED) // 201
     @PostMapping
-    public Userr create(@RequestBody Userr user) {
+    public Userr signup(@RequestBody Userr user) {
         return userService.save(user);
     }
 
@@ -57,18 +57,15 @@ public class    UserController {
     }
 
     @GetMapping(value = "/{userId}/qrcode", produces = MediaType.IMAGE_PNG_VALUE)
-    public ResponseEntity<BufferedImage> qrCodeFile(@PathVariable("userId") String userId) throws Exception{
-        return new ResponseEntity<>(UserService.generateQRCodeImage(userId),HttpStatus.OK);
+    public ResponseEntity<BufferedImage> qrCodeFile(@PathVariable("userId") String userId) throws Exception {
+        return new ResponseEntity<>(UserService.generateQRCodeImage(userId), HttpStatus.OK);
 
     }
+
     @GetMapping(value = "/{userId}/qrcodeSvg")
-    public ResponseEntity<String> qrCodeSvg(@PathVariable("userId") String userId) throws Exception{
-        return new ResponseEntity<>(UserService.getQRCodeSvg(userId, 700, 700, false),HttpStatus.OK);
+    public ResponseEntity<String> qrCodeSvg(@PathVariable("userId") String userId) throws Exception {
+        return new ResponseEntity<>(UserService.getQRCodeSvg(userId, 700, 700, false), HttpStatus.OK);
     }
-
-
-
-
 
 
 }
