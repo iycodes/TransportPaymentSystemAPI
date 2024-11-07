@@ -20,10 +20,13 @@ public class JWTService {
     @Value("${security.jwt.secret-key}")
     private String secretKey;
 
-    @Value("${security.jwt.expiration-time}")
+    @Value("${security.jwt.authToken-expiration-time}")
     private long jwtExpiration;
 
-    public String extractUsername(String token) {
+    @Value("${security.jwt.refreshToken-expiration-time}")
+    private long refreshTokenExpiration;
+
+    public String extractUsername(String token) throws Exception {
         return extractClaim(token, Claims::getSubject);
     }
 
@@ -40,15 +43,22 @@ public class JWTService {
         return buildToken(extraClaims, userDetails, jwtExpiration);
     }
 
+    public String generateRefreshToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+        return buildToken(extraClaims, userDetails, refreshTokenExpiration);
+    }
+
     public long getExpirationTime() {
         return jwtExpiration;
+    }
+
+    public long getRefreshTokenExpirationTime() {
+        return refreshTokenExpiration;
     }
 
     private String buildToken(
             Map<String, Object> extraClaims,
             UserDetails userDetails,
-            long expiration
-    ) {
+            long expiration) {
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
@@ -60,7 +70,12 @@ public class JWTService {
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
+        String username = "!";
+        try {
+            username = extractUsername(token);
+        } catch (Exception e) {
+            // doing nothing, if "!" is returned then this function returns false
+        }
         return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 

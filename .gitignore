@@ -199,3 +199,6 @@ README.html
 *.iml
 .idea
 .exercism
+**/firebase-service-account.json
+private-key.json
+**/private-key.json

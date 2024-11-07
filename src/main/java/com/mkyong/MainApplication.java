@@ -1,8 +1,13 @@
 package com.mkyong;
 
 import com.mkyong.model.Book;
-import com.mkyong.model.Userr;
-import com.mkyong.repository.BookRepository;
+import com.mkyong.model.TransactionEntity;
+import com.mkyong.model.UserEntity;
+import com.mkyong.model.UserEntity;
+import com.mkyong.model.UserEntity.UserRole;
+import com.mkyong.model.enums.TxStatus;
+import com.mkyong.model.enums.TxType;
+import com.mkyong.repository.TransactionRepository;
 import com.mkyong.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,17 +24,22 @@ import java.awt.image.BufferedImage;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Properties;
 
 @SpringBootApplication
 public class MainApplication {
 
     private static final Logger log = LoggerFactory.getLogger(MainApplication.class);
     @Autowired
-    BookRepository bookRepository;
-    @Autowired
     UserRepository userRepository;
+    @Autowired
+    TransactionRepository transactionRepository;
 
     public static void main(String[] args) {
+
+        Properties properties = new Properties();
+        properties.setProperty("autosave", "always");
+        properties.setProperty("cleanupSavepoints", "true");
         SpringApplication.run(MainApplication.class, args);
     }
     // Run this if app.db.init.enabled = true
@@ -43,35 +53,25 @@ public class MainApplication {
     @ConditionalOnProperty(prefix = "app", name = "db.init.enabled", havingValue = "true")
     public CommandLineRunner demoCommandLineRunner() {
 
-
         return args -> {
 
             System.out.println("Running.....");
-
-            Book b1 = new Book("Book A",
-                    BigDecimal.valueOf(9.99)
-
-            );
-            Book b2 = new Book("Book B",
-                    BigDecimal.valueOf(19.99)
-
-            );
-            Book b3 = new Book("Book C",
-                    BigDecimal.valueOf(29.99)
-
-            );
-            Book b4 = new Book("Book D",
-                    BigDecimal.valueOf(39.99)
-
-
-            );
-            Userr userr1 = new Userr(
-                    "Iyanuoluwa", "iyanuoluwafanoro@gmail.com", "08142751683", "pyrex007"
-            );
-            Userr userr2 = new Userr("Iyanu", "iyanufanoro@gmail.com", "08142751683", "pyrex007");
-
-            bookRepository.saveAll(List.of(b1, b2, b3, b4));
-            userRepository.saveAll(List.of(userr1, userr2));
+            // TransactionEntity mockTx = new TransactionEntity("1-2-17149979931", "Ride
+            // Payment", 1, 2,
+            // BigDecimal.valueOf(60),
+            // TxStatus.success, TxType.ridePayment);
+            UserEntity userr1 = new UserEntity(
+                    "Iyanuoluwa", "iyanuoluwafanoro@gmail.com", "08142751683",
+                    "$2a$12$XG609EMUTEXEQGFpYp76JOe.wX1MTz5WHWxJtEXOSqLF4AidbcOvu",
+                    UserRole.user);
+            UserEntity userr2 = new UserEntity("Iyanu", "fanoroiyanu@gmail.com",
+                    "08142751683",
+                    "$2a$12$XG609EMUTEXEQGFpYp76JOe.wX1MTz5WHWxJtEXOSqLF4AidbcOvu", UserRole.user);
+            UserEntity driver = new UserEntity("Sogo", "sogo113@gmail.com", "0813378499",
+                    "sogo123", UserRole.driver);
+            // transactionRepository.save(mockTx);
+            // bookRepository.saveAll(List.of(b1, b2, b3, b4));
+            // userRepository.saveAll(List.of(userr1, driver, userr2));
 
         };
     }
