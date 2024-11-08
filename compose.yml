@@ -1,0 +1,16 @@
+services:
+  transportp:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "5000"
+    # by default env in shell is used if none is provided below
+    # env_file: ".env" #if i decide to change name from .env
+    environment:
+      - DB_PORT_TP
+      - PORT_TP
+      - DB_USER_PASSWORD
+      - DB_USERNAME
+      - IP_ADDRESS
+      - DB_NAME_TP
