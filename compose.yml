@@ -1,10 +1,11 @@
 services:
   transportp:
+    container_name: transportp
     build:
       context: .
       dockerfile: ./Dockerfile
     ports:
-      - "5000"
+      - "7000"
     # by default env in shell is used if none is provided below
     # env_file: ".env" #if i decide to change name from .env
     environment:
