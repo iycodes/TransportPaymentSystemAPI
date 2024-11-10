@@ -9,6 +9,9 @@ import com.mkyong.model.enums.TxStatus;
 import com.mkyong.model.enums.TxType;
 import com.mkyong.repository.TransactionRepository;
 import com.mkyong.repository.UserRepository;
+
+import io.opentelemetry.sdk.resources.Resource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +20,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.converter.BufferedImageHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 
 import java.awt.image.BufferedImage;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -52,7 +59,13 @@ public class MainApplication {
     @Bean
     @ConditionalOnProperty(prefix = "app", name = "db.init.enabled", havingValue = "true")
     public CommandLineRunner demoCommandLineRunner() {
-
+        org.springframework.core.io.Resource resource = new ClassPathResource("test-xyz.json");
+        InputStream inputStream = null;
+        try {
+            inputStream = resource.getInputStream();
+            Reader reader = new InputStreamReader(inputStream, "UTF-8");
+        } catch (Exception e) {
+        }
         return args -> {
 
             System.out.println("Running#3.....");
