@@ -59,7 +59,7 @@ public class MainApplication {
     @Bean
     @ConditionalOnProperty(prefix = "app", name = "db.init.enabled", havingValue = "true")
     public CommandLineRunner demoCommandLineRunner() {
-        org.springframework.core.io.Resource resource = new ClassPathResource("test-xyz.json");
+        org.springframework.core.io.Resource resource = new ClassPathResource("firebase-service-account.json");
         InputStream inputStream = null;
         try {
             inputStream = resource.getInputStream();
