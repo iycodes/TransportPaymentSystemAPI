@@ -6,12 +6,6 @@ COPY . /project
 
 WORKDIR /project
 
-# ENV DB_PORT_TP='5432'
-# ENV DB_NAME_TP='transportp'
-# ENV DB_USERNAME='iyanuoluwa'
-# ENV DB_USER_PASSWORD='pyrex007'
-# ENV PORT_TP='8001'
-
 RUN mvn clean package
 
 FROM maven:3.9.0-eclipse-temurin-19
