@@ -1,7 +1,7 @@
 services:
   transportp:
     container_name: transportp
-    image: iycodes/transportp
+    image: iycodes/transportp:latest
     build:
       context: .
       dockerfile: ./Dockerfile
