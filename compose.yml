@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: ./Dockerfile
     ports:
-      - "7000"
+      - "8000:8000"
     # by default env in shell is used if none is provided below
     # env_file: ".env" #if i decide to change name from .env
     environment:
