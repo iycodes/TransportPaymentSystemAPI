@@ -7,7 +7,7 @@ git fetch
 git reset --hard HEAD
 git merge origin/main
 
-docker-compose up --detach --build
+docker compose up --detach --build
 
 exit
 ENDSSH
