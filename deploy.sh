@@ -5,7 +5,7 @@ cd projects/TransportPaymentSystemAPI/
 git fetch
 git reset --hard HEAD
 git merge origin/main
-
+docker build -t iycodes/transportp:latest
 CONTAINER_NAME=transportp
 if [ "$(docker ps -qa -f name=$CONTAINER_NAME)" ]; then
     if [ "$(docker ps -q -f name=$CONTAINER_NAME)" ]; then
