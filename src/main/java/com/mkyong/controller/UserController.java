@@ -21,6 +21,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.awt.image.BufferedImage;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,6 +50,14 @@ public class UserController {
 
     }
 
+    @GetMapping("me/balance")
+
+    public ResponseEntity<Object> getMyBalance() {
+        System.out.println("user balance called");
+        BigDecimal bal = userService.fetchMyBalance();
+        return ResponseEntity.ok(bal);
+
+    }
     // create a user
 
     // @GetMapping("/{id}")
