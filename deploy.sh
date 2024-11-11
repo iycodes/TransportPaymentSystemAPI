@@ -2,6 +2,7 @@ start=$(date +"%s")
 
 ssh -p ${SERVER_PORT} ${SERVER_USER}@${SERVER_HOST} -i key.txt -t -t -o StrictHostKeyChecking=no << 'ENDSSH'
 cd projects/TransportPaymentSystemAPI/
+
 git fetch
 git reset --hard HEAD
 git merge origin/main
