@@ -5,7 +5,7 @@ services:
     pull_policy: always
     build:
       context: .
-      dockerfile: ./Dockerfile
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
     # by default env in shell is used if none is provided below
