@@ -2,7 +2,7 @@ services:
   transportp:
     container_name: transportp
     image: iycodes/transportp:latest
-    pull_policy: missing
+    pull_policy: build
     build:
       context: .
       dockerfile: ./Dockerfile

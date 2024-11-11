@@ -202,3 +202,4 @@ README.html
 **/firebase-service-account.json
 private-key.json
 **/private-key.json
+.env
