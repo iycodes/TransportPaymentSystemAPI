@@ -4,7 +4,7 @@ ssh -p ${SERVER_PORT} ${SERVER_USER}@${SERVER_HOST} -i key.txt -t -t -o StrictHo
 cd projects/TransportPaymentSystemAPI/
 git fetch
 git reset --hard HEAD
-git merge origin/$CURRENT_BRANCH
+git merge origin/main
 docker pull iycodes/transportp:latest
 
 CONTAINER_NAME=transportp
