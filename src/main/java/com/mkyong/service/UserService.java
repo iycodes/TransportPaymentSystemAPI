@@ -7,48 +7,28 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
-import com.mkyong.configs.WebConfig;
-import com.mkyong.helpers.Patcher;
-import com.mkyong.model.TransactionEntity;
-import com.mkyong.model.UserEntity;
-import com.mkyong.model.VerificationCodeEntity;
-import com.mkyong.model.dtos.RegisterUserDto;
-import com.mkyong.model.dtos.VerifyEmailDto;
-import com.mkyong.model.dtos.Transaction.MakePaymentDto;
-import com.mkyong.model.dtos.Transaction.PaymentResponseDto;
-import com.mkyong.model.enums.TxStatus;
-import com.mkyong.repository.TransactionRepository;
-import com.mkyong.repository.UserRepository;
-import com.mkyong.repository.VerificationCodeRepository;
-import com.mkyong.responses.VerifyEmailResponse;
 
-import reactor.core.publisher.Mono;
+import com.mkyong.helpers.Patcher;
+
+import com.mkyong.model.UserEntity;
+
+import com.mkyong.model.dtos.RegisterUserDto;
+
+import com.mkyong.repository.UserRepository;
 
 import org.jfree.graphics2d.svg.SVGGraphics2D;
 import org.jfree.graphics2d.svg.ViewBox;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.BufferedImageOp;
 import java.math.BigDecimal;
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URL;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.Map;
+
 import java.util.Optional;
 
 @Service
@@ -84,70 +64,12 @@ public class UserService {
         return userRepository.getNameById(id);
     }
 
-    // WebClient client = WebClient.create("http://localhost:3002");
-    // public void handleVerificationCode(VerifyEmailDto dto) {
-    // Random random = new Random();
+    public BigDecimal fetchMyBalance() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserEntity currentEntity = (UserEntity) authentication.getPrincipal();
+        return currentEntity.getBalance();
 
-    // Optional<VerificationCodeEntity> verificationCodeEntity =
-    // verificationCodeRepository
-    // .findByEmail(dto.getRecepientEmail());
-    // if (verificationCodeEntity.isEmpty()) {
-    // System.out.println("No verification code found in server");
-    // int randomNumber = random.nextInt(1000, 9999);
-    // verificationCodeRepository.save(new VerificationCodeEntity(randomNumber,
-    // dto.getRecepientEmail()));
-    // dto.setCode(randomNumber);
-    // } else if
-    // (verificationCodeEntity.get().getExpiresIn().isBefore(LocalDateTime.now())) {
-    // System.out.println("verification code found in server but expired!");
-    // int randomNumber = random.nextInt(1000, 9999);
-    // verificationCodeEntity.get().setCode(randomNumber);
-    // verificationCodeEntity.get().setExpiresIn(LocalDateTime.now().plusMinutes(30));
-    // //
-    // verificationCodeRepository.verificationCodeRepository.deleteById(verificationCodeEntity.get().getId());
-    // verificationCodeRepository.save(verificationCodeEntity.get());
-    // dto.setCode(randomNumber);
-    // } else {
-    // System.out.println("An existing verification code was found in the server");
-    // dto.setCode(verificationCodeEntity.get().getCode());
-    // }
-    // }
-
-    // public boolean sendVerificationEmail(VerifyEmailDto dto) {
-    // handleVerificationCode(dto);
-    // try {
-    // Mono<ResponseEntity<VerifyEmailResponse>> request =
-    // webConfig.webClient().post()
-    // .uri("/send_mail").accept(MediaType.APPLICATION_JSON).body(Mono.just(dto),
-    // VerifyEmailDto.class)
-    // .retrieve().toEntity(VerifyEmailResponse.class);
-    // ResponseEntity<VerifyEmailResponse> response = request.block();
-    // if (response.getStatusCode().value() < 300) {
-    // // System.out.println("mail sent succesfully");
-    // return true;
-    // } else {
-    // // System.out.println("error sending the mail oo");
-    // return false;
-    // }
-    // } catch (Exception e) {
-    // System.err.println(e);
-    // return false;
-    // }
-    // }
-
-    // public boolean validateVerificationCode(String email, int codeInputByUser) {
-    // Optional<VerificationCodeEntity> verificationCodeEntity =
-    // verificationCodeRepository
-    // .findByEmail(email);
-    // if (verificationCodeEntity.isEmpty())
-    // return false;
-    // else if (verificationCodeEntity.get().getCode() == codeInputByUser) {
-    // verificationCodeRepository.deleteById(verificationCodeEntity.get().getId());
-    // return true;
-    // } else {
-    // return false;
-    // }
-    // }
+    }
 
     public static BufferedImage generateQRCodeImage(String userId) throws Exception {
         QRCodeWriter barcodeWriter = new QRCodeWriter();
