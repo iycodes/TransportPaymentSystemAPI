@@ -200,4 +200,5 @@ README.html
 .idea
 .exercism
 **/firebase-service-account.json
+firebase-service-account.json
 .env
