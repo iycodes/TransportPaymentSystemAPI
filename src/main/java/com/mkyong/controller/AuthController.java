@@ -11,7 +11,7 @@ import com.mkyong.model.dtos.VerifyEmailDto;
 import com.mkyong.responses.ErrorResponse;
 import com.mkyong.responses.LoginResponse;
 import com.mkyong.responses.VerifyEmailResponse;
-import com.mkyong.service.AuthenticationService;
+import com.mkyong.service.AuthService;
 import com.mkyong.service.JWTService;
 import com.mkyong.service.UserService;
 
@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 public class AuthController {
     @Autowired
-    private final AuthenticationService authenticationService;
+    private final AuthService authenticationService;
     @Autowired
     private final JWTService jwtService;
     @Autowired
@@ -42,7 +42,7 @@ public class AuthController {
 
     public AuthController(
             UserService userService_,
-            AuthenticationService authenticationService_,
+            AuthService authenticationService_,
             JWTService jwtService_,
             AuthenticationManager authenticationManager_) {
         this.authenticationService = authenticationService_;
