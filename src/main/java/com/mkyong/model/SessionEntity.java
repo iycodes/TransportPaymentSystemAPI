@@ -27,6 +27,7 @@ public class SessionEntity {
 
     public SessionEntity() {
     }
+    
 
     public SessionEntity(String userId_, String refreshToken_, String ipAddress_, String fcmToken_) {
         // this.createdAt = createdAt_;

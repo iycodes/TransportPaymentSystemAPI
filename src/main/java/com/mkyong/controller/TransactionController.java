@@ -21,12 +21,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mkyong.model.TransactionEntity;
 import com.mkyong.model.UserEntity;
 import com.mkyong.model.dtos.FundAccountDto;
+import com.mkyong.model.dtos.NewTxDto;
+import com.mkyong.model.dtos.UpdateTxDto;
+import com.mkyong.model.dtos.UpdateTxWebhookDto;
 import com.mkyong.model.dtos.Transaction.MakePaymentDto;
 import com.mkyong.model.dtos.Transaction.PaymentResponseDto;
 import com.mkyong.model.dtos.Transaction.PaymentSuccessDto;
 import com.mkyong.model.dtos.Transaction.TxDto;
 import com.mkyong.model.enums.TxStatus;
 import com.mkyong.responses.FundAccountResponse;
+import com.mkyong.responses.NewTxResponse;
 import com.mkyong.service.TransactionService;
 import com.mkyong.service.UserService;
 
@@ -104,7 +108,7 @@ public class TransactionController {
             return new ResponseEntity<>("Transaction not found!", HttpStatus.NOT_FOUND);
         TransactionEntity tx_ = tx.get();
         TxDto txDto = new TxDto(tx_.getId(), tx_.getSenderId(), tx_.getReceiverId(), tx_.getCreatedAt(),
-                tx_.getStatus(), tx_.getType());
+                tx_.getStatus(), tx_.getType(), null);
         return new ResponseEntity<TxDto>(txDto, HttpStatus.OK);
 
     }
@@ -134,5 +138,22 @@ public class TransactionController {
         // if(res.getError()!=null){
         // return new ResponseEntity<>(res, )
         // }
+    }
+
+    @PostMapping("/fundAccountPending")
+    public ResponseEntity<NewTxResponse> fundAccountPending(@RequestBody NewTxDto dto) {
+        NewTxResponse newTxResponse = transactionService.newTx(dto);
+        return new ResponseEntity<>(newTxResponse, newTxResponse.getStatusCode());
+    }
+
+    @PostMapping("/updateTx")
+    public ResponseEntity<Object> updateTx(@RequestBody UpdateTxDto dto) {
+        return transactionService.updateTx(dto);
+    }
+
+    @PostMapping("webhook/updateTx")
+    public ResponseEntity<Object> updateTxViaWebook(@RequestBody UpdateTxWebhookDto dto) {
+        // UpdateTxDto updateTxDto = new UpdateTxDto(dto.get, null, null)
+        return transactionService.updateTxViaWebhook(dto.getData());
     }
 }

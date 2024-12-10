@@ -30,13 +30,13 @@ public class TransactionEntity {
     private LocalDateTime createdAt = LocalDateTime.now();
     private TxStatus status;
     private TxType type;
+    private String merchant;
 
     public TransactionEntity() {
     }
 
     public TransactionEntity(String id_, String title_, String senderId_, String receiverId_, BigDecimal amount_,
-            TxStatus status_,
-            TxType type_) {
+            TxStatus status_, TxType type_, String merchant_) {
         this.id = id_;
         this.title = title_;
         this.senderId = senderId_;
@@ -44,6 +44,7 @@ public class TransactionEntity {
         this.amount = amount_;
         this.status = status_;
         this.type = type_;
+        this.merchant = merchant_;
 
     }
 
