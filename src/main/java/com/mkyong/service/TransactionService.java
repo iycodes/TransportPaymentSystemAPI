@@ -294,7 +294,7 @@ public class TransactionService {
         }
         TransactionEntity transactionEntity = new TransactionEntity(dto.getTxRef(), dto.getFintech_tx_id(),
                 dto.getFintech_ref(), dto.getTitle(), "funding",
-                dto.getUserId(), dto.getAmount(), TxStatus.pending, dto.getTxType(), dto.getMerchant());
+                dto.getUserId(), dto.getAmount(), dto.getTxStatus(), dto.getType(), dto.getMerchant());
         try {
             transactionRepository.save(transactionEntity);
             return NewTxResponse.success();
