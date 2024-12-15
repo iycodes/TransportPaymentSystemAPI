@@ -80,7 +80,7 @@ public class SchedulingService {
 
     // };
 
-    @Scheduled(fixedDelay = 60000)
+    @Scheduled(fixedDelay = 1800000)
     // @Scheduled(cron = "0 * * * * *")
     public void checkPendingTransactions() {
         log.info("scheduled application ran");

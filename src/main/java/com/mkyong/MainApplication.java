@@ -58,9 +58,7 @@ public class MainApplication {
     public CommandLineRunner demoCommandLineRunner() {
 
         return args -> {
-            // Environment.setPublicKey("FLWPUBK_TEST-8e4358e4f6578557b3dbbd87e5d258a5-X");
-            // Environment.setSecretKey("FLWSECK_TEST-6acf05517e4741262434ae09a8b32da4-X");
-            // Environment.setEncryptionKey("FLWSECK_TESTa5e6279aa4bf");
+
             System.out.println("Running#14.....");
             // TransactionEntity mockTx = new TransactionEntity("1-2-17149979931", "Ride
             // Payment", 1, 2,
