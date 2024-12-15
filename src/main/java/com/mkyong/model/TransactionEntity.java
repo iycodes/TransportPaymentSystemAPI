@@ -22,6 +22,8 @@ public class TransactionEntity {
     @Id
     @Column(unique = true)
     private String id;
+    private String fintech_tx_id;
+    private String fintech_ref;
     private String title;
     private String senderId;
     private String receiverId;
@@ -35,9 +37,13 @@ public class TransactionEntity {
     public TransactionEntity() {
     }
 
-    public TransactionEntity(String id_, String title_, String senderId_, String receiverId_, BigDecimal amount_,
+    public TransactionEntity(String id_, String fintech_tx_id_, String fintech_ref_, String title_, String senderId_,
+            String receiverId_,
+            BigDecimal amount_,
             TxStatus status_, TxType type_, String merchant_) {
         this.id = id_;
+        this.fintech_tx_id = fintech_tx_id_;
+        this.fintech_ref = fintech_ref_;
         this.title = title_;
         this.senderId = senderId_;
         this.receiverId = receiverId_;

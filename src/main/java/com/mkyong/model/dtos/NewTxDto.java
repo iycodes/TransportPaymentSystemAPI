@@ -8,7 +8,9 @@ import lombok.Data;
 
 @Data
 public class NewTxDto {
-    private String txId;
+    private String txRef;
+    private String fintech_tx_id;
+    private String fintech_ref;
     private String userId;
     private BigDecimal amount;
     private String title;

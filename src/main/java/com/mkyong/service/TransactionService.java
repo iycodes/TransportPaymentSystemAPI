@@ -136,7 +136,7 @@ public class TransactionService {
             try {
                 sender.setBalance(sender.getBalance().subtract(dto.getAmount()));
                 receiver.setBalance(receiver.getBalance().add(dto.getAmount()));
-                TransactionEntity tx = new TransactionEntity(txId, dto.getTitle(),
+                TransactionEntity tx = new TransactionEntity(txId, null, null, dto.getTitle(),
                         dto.getSenderId(),
                         dto.getReceiverId(),
                         dto.getAmount(), TxStatus.success, TxType.ridePayment, null);
@@ -148,7 +148,7 @@ public class TransactionService {
                 System.err.println(e);
                 System.out.println("Error Making payment!, e is " + e.toString());
                 // TODO: handle exception
-                TransactionEntity tx = new TransactionEntity(txId, dto.getTitle(),
+                TransactionEntity tx = new TransactionEntity(txId, null, null, dto.getTitle(),
                         dto.getSenderId(),
                         dto.getReceiverId(),
                         dto.getAmount(), TxStatus.failed, TxType.ridePayment, null);
@@ -214,7 +214,8 @@ public class TransactionService {
             return new ResponseEntity<>(fundAccountResponse, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         try {
-            TransactionEntity transactionEntity = new TransactionEntity(dto.getTxRef(), dto.getTitle(), "funding",
+            TransactionEntity transactionEntity = new TransactionEntity(dto.getTxRef(), dto.getFintech_tx_id(),
+                    dto.getFintech_ref(), dto.getTitle(), "funding",
                     dto.getUserId(), dto.getAmount(), TxStatus.success, TxType.funding, "Admin");
             transactionRepository.save(transactionEntity);
             return new ResponseEntity<>(fundAccountResponse, fundAccountResponse.getStatusCode());
@@ -286,12 +287,13 @@ public class TransactionService {
                     HttpStatus.FORBIDDEN);
         }
         // String txId = TransactionEntity.createId("funding", dto.getUserId());
-        Optional<TransactionEntity> transactionOptional = transactionRepository.findById(dto.getTxId());
+        Optional<TransactionEntity> transactionOptional = transactionRepository.findById(dto.getTxRef());
         if (transactionOptional.isPresent()) {
             System.err.println("tx already exists");
             return NewTxResponse.error("Transaction already exists", HttpStatus.CONFLICT);
         }
-        TransactionEntity transactionEntity = new TransactionEntity(dto.getTxId(), dto.getTitle(), "funding",
+        TransactionEntity transactionEntity = new TransactionEntity(dto.getTxRef(), dto.getFintech_tx_id(),
+                dto.getFintech_ref(), dto.getTitle(), "funding",
                 dto.getUserId(), dto.getAmount(), TxStatus.pending, dto.getTxType(), dto.getMerchant());
         try {
             transactionRepository.save(transactionEntity);
@@ -311,10 +313,15 @@ public class TransactionService {
             return new ResponseEntity<>("tx not found", HttpStatus.BAD_REQUEST);
         }
         TransactionEntity txEntity = txEntityOptional.get();
+        if (txEntity.getStatus() != TxStatus.pending) {
+            // System.out.println("transaction requires no update, already settled");
+            return new ResponseEntity<>("transaction requires no update, already settled", HttpStatus.FORBIDDEN);
+        }
         txEntity.setStatus(dto.getTxStatus());
         try {
             transactionRepository.save(txEntity);
-            FundAccountDto fundAccountDto = new FundAccountDto(txEntity.getReceiverId(), "Account Funding",
+            FundAccountDto fundAccountDto = new FundAccountDto(txEntity.getFintech_tx_id(), txEntity.getFintech_ref(),
+                    txEntity.getReceiverId(), "Account Funding",
                     dto.getAmount(), dto.getTxId());
             if (dto.getTxStatus() == TxStatus.failed) {
                 return new ResponseEntity<>("transaction updated with failed payment", HttpStatus.OK);
@@ -346,7 +353,7 @@ public class TransactionService {
             default:
                 break;
         }
-        UpdateTxDto updateTxDto = new UpdateTxDto(dto.getTx_ref(), dto.getCharged_amount(), status_);
+        UpdateTxDto updateTxDto = new UpdateTxDto(dto.getTx_ref(), dto.getAmount_settled(), status_);
         return updateTx(updateTxDto);
     }
 

@@ -80,6 +80,13 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- flutterwave java sdk -->
+        <!-- <dependency>
+            <groupId>com.flutterwave</groupId>
+            <artifactId>f4b-java</artifactId>
+            <version>3.0</version>
+        </dependency> -->
+
         <!-- Spring Test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

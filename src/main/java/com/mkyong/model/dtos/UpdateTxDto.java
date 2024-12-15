@@ -22,4 +22,16 @@ public class UpdateTxDto {
         this.txStatus = txStatus_;
     }
 
+    public UpdateTxDto fromWebHook(WebhookData data) {
+        switch (data.getStatus()) {
+            case "succesful":
+                return new UpdateTxDto(data.getTx_ref(), data.getAmount_settled(), TxStatus.pending);
+            case "failed":
+                return new UpdateTxDto(data.getTx_ref(), data.getAmount_settled(), TxStatus.failed);
+            default:
+                return new UpdateTxDto(data.getTx_ref(), data.getAmount_settled(), TxStatus.pending);
+        }
+
+    }
+
 }
