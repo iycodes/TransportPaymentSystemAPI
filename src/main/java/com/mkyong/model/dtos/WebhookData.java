@@ -6,7 +6,9 @@ import lombok.Data;
 
 @Data
 public class WebhookData {
+    private String id;
     private BigDecimal charged_amount;
+    private BigDecimal amount_settled;
     private BigDecimal app_fee;
     private BigDecimal merchant_fee;
     private String status;

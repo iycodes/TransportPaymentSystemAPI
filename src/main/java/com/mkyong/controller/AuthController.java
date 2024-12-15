@@ -113,10 +113,11 @@ public class AuthController {
     public ResponseEntity<LoginResponse> login(@RequestBody LoginUserDto dto) {
         System.out.println("Login Request, email is : " + dto.getEmail() + " Password is : " + dto.getPassword());
         Optional<UserEntity> user = userService.findByEmail(dto.getEmail());
-        System.out.println("user attempting login is " + user.get().toString());
+
         if (user.isEmpty()) {
-            return new ResponseEntity<>(new LoginResponse("User does not exist"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new LoginResponse("User does not exist"), HttpStatus.NOT_FOUND);
         }
+        System.out.println("user attempting login is " + user.get().toString());
         return ResponseEntity.ok(authenticationService.login(dto, user.get().getId()));
         // return k(new LoginResponse());
     }

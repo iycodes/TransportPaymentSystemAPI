@@ -1,6 +1,7 @@
 package com.mkyong.controller;
 
 import java.net.http.HttpRequest;
+import java.util.List;
 import java.util.Optional;
 
 import org.apache.catalina.connector.Response;
@@ -31,6 +32,7 @@ import com.mkyong.model.dtos.Transaction.TxDto;
 import com.mkyong.model.enums.TxStatus;
 import com.mkyong.responses.FundAccountResponse;
 import com.mkyong.responses.NewTxResponse;
+import com.mkyong.service.SchedulingService;
 import com.mkyong.service.TransactionService;
 import com.mkyong.service.UserService;
 
@@ -43,6 +45,9 @@ public class TransactionController {
     private TransactionService transactionService;
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private SchedulingService schedulingService;
 
     // @Autowired
     // private TransactionService
@@ -138,6 +143,11 @@ public class TransactionController {
         // if(res.getError()!=null){
         // return new ResponseEntity<>(res, )
         // }
+    }
+
+    @GetMapping("/checkPendingTx")
+    ResponseEntity<List<TransactionEntity>> checkPendingTransactions() {
+        return new ResponseEntity<>(schedulingService.checkPendingTransactions2(), HttpStatus.OK);
     }
 
     @PostMapping("/fundAccountPending")

@@ -6,5 +6,6 @@ import lombok.Data;
 public class UpdateTxWebhookDto {
     private String event;
     private WebhookData data;
+    private String status;
 
 }
