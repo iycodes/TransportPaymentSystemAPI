@@ -163,9 +163,9 @@ public class TransactionController {
 
     @PostMapping("webhook/updateTx")
     public ResponseEntity<Object> updateTxViaWebook(@RequestBody UpdateTxWebhookDto dto,
-            @RequestHeader("verif-hash") String webhookSecretHash) {
+            @RequestHeader("verif-hash") Optional<String> webhookSecretHash) {
         // UpdateTxDto updateTxDto = new UpdateTxDto(dto.get, null, null)
-        if (webhookSecretHash == "riide") {
+        if (webhookSecretHash.isPresent() && webhookSecretHash.get() == "riide") {
             System.out.println("webhook from flutterwave");
         }
         return transactionService.updateTxViaWebhook(dto.getData());
