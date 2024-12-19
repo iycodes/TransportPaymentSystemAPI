@@ -161,6 +161,12 @@ public class TransactionController {
         return transactionService.updateTx(dto);
     }
 
+    @PostMapping("/newTx")
+    public ResponseEntity<NewTxResponse> newTx(@RequestBody NewTxDto dto) {
+        NewTxResponse newTxRes = transactionService.newTx(dto);
+        return new ResponseEntity<NewTxResponse>(newTxRes, newTxRes.getStatusCode());
+    }
+
     @PostMapping("webhook/updateTx")
     public ResponseEntity<Object> updateTxViaWebook(@RequestBody UpdateTxWebhookDto dto,
             @RequestHeader("verif-hash") Optional<String> webhookSecretHash) {

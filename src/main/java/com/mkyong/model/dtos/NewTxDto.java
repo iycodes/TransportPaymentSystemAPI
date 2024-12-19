@@ -2,6 +2,7 @@ package com.mkyong.model.dtos;
 
 import java.math.BigDecimal;
 
+import com.mkyong.model.enums.TxStatus;
 import com.mkyong.model.enums.TxType;
 
 import lombok.Data;
@@ -15,7 +16,8 @@ public class NewTxDto {
     private BigDecimal amount;
     private String title;
     // private String txRef;
-    private TxType txType;
+    private TxType type;
+    private TxStatus txStatus;
     private String merchant;
 
 }
