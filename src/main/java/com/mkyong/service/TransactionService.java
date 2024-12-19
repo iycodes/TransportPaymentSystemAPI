@@ -318,12 +318,18 @@ public class TransactionService {
             return new ResponseEntity<>("transaction requires no update, already settled", HttpStatus.FORBIDDEN);
         }
         txEntity.setStatus(dto.getTxStatus());
+        // txEntity.setFintech_tx_id(dto.getFintech_tx_id());
+        // if (dto.getAmount() != null && dto.getAmount().doubleValue() > 0) {
+        // txEntity.setAmount(dto.getAmount());
+        // }
+
         try {
             transactionRepository.save(txEntity);
             FundAccountDto fundAccountDto = new FundAccountDto(txEntity.getFintech_tx_id(), txEntity.getFintech_ref(),
                     txEntity.getReceiverId(), "Account Funding",
                     dto.getAmount(), dto.getTxId());
             if (dto.getTxStatus() == TxStatus.failed) {
+
                 return new ResponseEntity<>("transaction updated with failed payment", HttpStatus.OK);
 
             }
@@ -353,7 +359,7 @@ public class TransactionService {
             default:
                 break;
         }
-        UpdateTxDto updateTxDto = new UpdateTxDto(dto.getTx_ref(), dto.getAmount_settled(), status_);
+        UpdateTxDto updateTxDto = new UpdateTxDto(dto.getTx_ref(), dto.getAmount_settled(), status_, dto.getId());
         return updateTx(updateTxDto);
     }
 

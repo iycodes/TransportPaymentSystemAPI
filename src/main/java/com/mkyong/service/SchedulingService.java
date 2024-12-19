@@ -91,9 +91,9 @@ public class SchedulingService {
         AtomicInteger i = new AtomicInteger(0);
         exec.scheduleAtFixedRate(() -> {
             TransactionEntity tx = pendingTx.get(i.get());
-            String txId = tx.getFintech_tx_id();
+            String txRef = tx.getId();
             Mono<ResponseEntity<UpdateTxWebhookDto>> request = webClient().get()
-                    .uri("/" + txId + "/verify")
+                    .uri("/verify_by_reference?tx_ref=" + txRef)
                     .accept(MediaType.APPLICATION_JSON)
                     .retrieve().toEntity(UpdateTxWebhookDto.class);
             try {
